@@ -1,8 +1,7 @@
-
 services:
   smart-dashboard:
     build:
-      context: ..              # ← корень проекта (на уровень выше)
+      context: .
       dockerfile: docker/Dockerfile
     container_name: smart-dashboard
     ports:
