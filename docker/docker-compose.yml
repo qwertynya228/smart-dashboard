@@ -1,0 +1,10 @@
+
+services:
+  smart-dashboard:
+    build:
+      context: ..              # ← корень проекта (на уровень выше)
+      dockerfile: docker/Dockerfile
+    container_name: smart-dashboard
+    ports:
+      - "3000:3000"
+    restart: unless-stopped

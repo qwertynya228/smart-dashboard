@@ -1,0 +1,13 @@
+html, body, div, span, h1, h2, h3, h4, p, a, button, input, textarea {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+}
+
+button {
+    background: none;
+    border: none;
+    cursor: pointer;
+}

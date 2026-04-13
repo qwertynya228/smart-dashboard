@@ -1,0 +1,87 @@
+.tasks-module {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.tasks-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.add-btn {
+    background: #6366f1;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.task-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    background: #2a2a3a;
+    margin-bottom: 8px;
+    border-radius: 8px;
+}
+
+.task-item.completed {
+    opacity: 0.6;
+}
+
+.task-title {
+    flex: 1;
+}
+
+.delete-task {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.habits-section {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid #3a3a4a;
+}
+
+.habit-control {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.habit-btn {
+    background: #4f46e5;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.save-btn {
+    background: #10b981;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 24px;
+    width: 100%;
+}
+
+.tasks-category {
+    margin-bottom: 24px;
+}
+
+.tasks-category h4 {
+    margin-bottom: 12px;
+    color: #a78bfa;
+}

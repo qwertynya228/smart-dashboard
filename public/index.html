@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+
+        <!-- Адаптация под мобильные устройства -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        <!-- Цвет верхней панели браузера (дублирует theme_color из manifest) -->
+        <meta name="theme-color" content="#1e1e1e" />
+
+        <!-- Описание приложения -->
+        <meta name="description" content="Smart Dashboard PWA" />
+
+        <!-- Подключение manifest -->
+        <link rel="manifest" href="/manifest.json" />
+
+        <!-- Иконка -->
+        <link rel="icon" href="/favicon.ico" />
+
+        <!-- Поддержка iOS -->
+        <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+        <!-- Стили -->
+        <link rel="stylesheet" href="/src/styles/reset.css" />
+        <link rel="stylesheet" href="/src/styles/variables.css" />
+        <link rel="stylesheet" href="/src/styles/main.css" />
+
+        <title>Smart Dashboard</title>
+    </head>
+<body>
+
+  <!-- Корневой контейнер SPA -->
+  <div id="app"></div>
+
+  <!-- Основной JS (точка входа) -->
+  <script type="module" src="/src/main.js"></script>
+
+</body>
+</html>

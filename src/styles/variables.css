@@ -1,0 +1,14 @@
+:root {
+    --primary-purple: #8b5cf6;
+    --primary-blue: #3b82f6;
+    --primary-green: #10b981;
+    --primary-orange: #f59e0b;
+    
+    --bg-dark: #121212;
+    --surface-dark: #1e1e2e;
+    --text-dark: #ffffff;
+    
+    --bg-light: #f5f5f5;
+    --surface-light: #ffffff;
+    --text-light: #1a1a2e;
+}

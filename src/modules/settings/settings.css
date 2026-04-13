@@ -1,0 +1,208 @@
+.settings-module {
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.settings-section {
+    background: #2a2a3a;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.settings-section h3 {
+    margin: 0 0 16px 0;
+    color: #a78bfa;
+}
+
+.settings-option {
+    display: flex;
+    gap: 24px;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.color-themes {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.color-theme-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+}
+
+.color-preview {
+    width: 24px;
+    height: 24px;
+    border-radius: 12px;
+}
+
+/* Светлая тема */
+.light-theme {
+    background: #f5f5f5;
+    color: #1a1a2e;
+}
+
+.light-theme .settings-section,
+.light-theme .profile-form,
+.light-theme .note-card,
+.light-theme .stat-card,
+.light-theme .weekly-section {
+    background: #ffffff;
+    border: 1px solid #e0e0e0;
+}
+
+.light-theme .form-input,
+.light-theme .form-textarea,
+.light-theme .note-title-input,
+.light-theme .note-content-input {
+    background: #f0f0f0;
+    color: #1a1a2e;
+    border: 1px solid #ddd;
+}
+
+.light-theme .task-item {
+    background: #f0f0f0;
+    color: #1a1a2e;
+}
+
+.light-theme .habit-btn {
+    background: #e0e0e0;
+    color: #1a1a2e;
+}
+
+.light-theme .save-btn {
+    background: #10b981;
+    color: white;
+}
+
+/* Тёмная тема */
+.dark-theme {
+    background: #121212;
+    color: #ffffff;
+}
+
+.dark-theme .settings-section,
+.dark-theme .profile-form,
+.dark-theme .note-card,
+.dark-theme .stat-card,
+.dark-theme .weekly-section {
+    background: #2a2a3a;
+}
+
+.dark-theme .form-input,
+.dark-theme .form-textarea,
+.dark-theme .note-title-input,
+.dark-theme .note-content-input {
+    background: #1e1e2e;
+    color: #ffffff;
+    border: 1px solid #3a3a4a;
+}
+
+.dark-theme .task-item {
+    background: #2a2a3a;
+    color: #ffffff;
+}
+
+/* Цветовые темы */
+[data-color-theme="purple"] .add-btn,
+[data-color-theme="purple"] .habit-btn,
+[data-color-theme="purple"] .edit-note,
+[data-color-theme="purple"] .select-file-btn,
+[data-color-theme="purple"] .nav-btn.active {
+    background: #8b5cf6;
+}
+
+[data-color-theme="purple"] .save-btn {
+    background: #8b5cf6;
+}
+
+[data-color-theme="purple"] .stat-value,
+[data-color-theme="purple"] .settings-section h3,
+[data-color-theme="purple"] .note-title {
+    color: #8b5cf6;
+}
+
+[data-color-theme="blue"] .add-btn,
+[data-color-theme="blue"] .habit-btn,
+[data-color-theme="blue"] .edit-note,
+[data-color-theme="blue"] .select-file-btn,
+[data-color-theme="blue"] .nav-btn.active {
+    background: #3b82f6;
+}
+
+[data-color-theme="blue"] .save-btn {
+    background: #3b82f6;
+}
+
+[data-color-theme="blue"] .stat-value,
+[data-color-theme="blue"] .settings-section h3,
+[data-color-theme="blue"] .note-title {
+    color: #3b82f6;
+}
+
+[data-color-theme="green"] .add-btn,
+[data-color-theme="green"] .habit-btn,
+[data-color-theme="green"] .edit-note,
+[data-color-theme="green"] .select-file-btn,
+[data-color-theme="green"] .nav-btn.active {
+    background: #10b981;
+}
+
+[data-color-theme="green"] .save-btn {
+    background: #10b981;
+}
+
+[data-color-theme="green"] .stat-value,
+[data-color-theme="green"] .settings-section h3,
+[data-color-theme="green"] .note-title {
+    color: #10b981;
+}
+
+[data-color-theme="orange"] .add-btn,
+[data-color-theme="orange"] .habit-btn,
+[data-color-theme="orange"] .edit-note,
+[data-color-theme="orange"] .select-file-btn,
+[data-color-theme="orange"] .nav-btn.active {
+    background: #f59e0b;
+}
+
+[data-color-theme="orange"] .save-btn {
+    background: #f59e0b;
+}
+
+[data-color-theme="orange"] .stat-value,
+[data-color-theme="orange"] .settings-section h3,
+[data-color-theme="orange"] .note-title {
+    color: #f59e0b;
+}
+
+/* Адаптация для мобильных */
+@media (max-width: 768px) {
+    .settings-module {
+        padding: 0 16px;
+    }
+    
+    .color-themes {
+        gap: 12px;
+    }
+    
+    .color-theme-label {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .settings-option {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
