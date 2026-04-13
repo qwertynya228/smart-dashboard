@@ -1,37 +1,44 @@
 import { initRouter } from "./core/router.js";
 import { initUI } from "./core/uiContainer.js";
 
-// Точка входа приложения
 function initApp() {
   console.log("App started");
-
-  // Инициализация UI (создание базовой структуры)
   initUI();
-
-  // Инициализация роутера (переключение между модулями)
   initRouter();
-
-  // Регистрация Service Worker (для PWA)
   registerServiceWorker();
 }
 
-// Регистрация Service Worker
 function registerServiceWorker() {
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker
-        .register("/src/serviceWorker.js")
-        .then(registration => {
-          console.log("Service Worker registered:", registration);
-        })
-        .catch(error => {
-          console.error("Service Worker registration failed:", error);
-        });
-    });
-  } else {
+  if (!("serviceWorker" in navigator)) {
     console.log("Service Worker not supported");
+    return;
   }
+
+  const isLocal =
+    location.hostname === "localhost" ||
+    location.hostname === "127.0.0.1";
+
+  if (isLocal) {
+    navigator.serviceWorker.getRegistrations().then(registrations => {
+      registrations.forEach(registration => registration.unregister());
+    });
+
+    if ("caches" in window) {
+      caches.keys().then(keys => keys.forEach(key => caches.delete(key)));
+    }
+    return;
+  }
+
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/src/serviceWorker.js", { scope: "/" })
+      .then(registration => {
+        console.log("Service Worker registered:", registration);
+      })
+      .catch(error => {
+        console.error("Service Worker registration failed:", error);
+      });
+  });
 }
 
-// Запуск приложения
 initApp();

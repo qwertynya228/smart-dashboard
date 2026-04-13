@@ -1,13 +1,29 @@
 let settings = loadSettings();
 
+function normalizeThemeId(colorTheme) {
+    const legacyMap = {
+        purple: "lilac",
+        blue: "sky",
+        green: "mint",
+        orange: "sand"
+    };
+
+    return legacyMap[colorTheme] || colorTheme || "mint";
+}
+
 function loadSettings() {
     const saved = localStorage.getItem("settings");
     if (saved) {
-        return JSON.parse(saved);
+        const parsed = JSON.parse(saved);
+        return {
+            appTheme: parsed.appTheme || "light",
+            colorTheme: normalizeThemeId(parsed.colorTheme)
+        };
     }
+
     return {
         appTheme: "light",
-        colorTheme: "purple"
+        colorTheme: "mint"
     };
 }
 
@@ -20,29 +36,28 @@ export function getSettings() {
 }
 
 export function updateSettings(updates) {
-    settings = { ...settings, ...updates };
+    settings = {
+        ...settings,
+        ...updates,
+        colorTheme: normalizeThemeId(updates.colorTheme || settings.colorTheme)
+    };
     saveSettings();
     applySettings();
     return settings;
 }
 
 export function applySettings() {
-    if (settings.appTheme === "dark") {
-        document.body.classList.add("dark-theme");
-        document.body.classList.remove("light-theme");
-    } else {
-        document.body.classList.add("light-theme");
-        document.body.classList.remove("dark-theme");
-    }
-    
-    document.body.setAttribute("data-color-theme", settings.colorTheme);
+    document.body.classList.toggle("dark-theme", settings.appTheme === "dark");
+    document.body.classList.toggle("light-theme", settings.appTheme !== "dark");
+    document.body.setAttribute("data-color-theme", normalizeThemeId(settings.colorTheme));
 }
 
 export function getColorThemes() {
     return [
-        { id: "purple", name: "Фиолетовый", primary: "#8b5cf6" },
-        { id: "blue", name: "Синий", primary: "#3b82f6" },
-        { id: "green", name: "Зелёный", primary: "#10b981" },
-        { id: "orange", name: "Оранжевый", primary: "#f59e0b" }
+        { id: "mint", name: "Мятный", primary: "#76b59a" },
+        { id: "rose", name: "Розовый", primary: "#c78686" },
+        { id: "sand", name: "Песочный", primary: "#c9b179" },
+        { id: "sky", name: "Небесный", primary: "#7aa6c9" },
+        { id: "lilac", name: "Лиловый", primary: "#b49ac9" }
     ];
 }
