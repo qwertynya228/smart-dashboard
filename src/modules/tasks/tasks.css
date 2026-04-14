@@ -85,3 +85,16 @@
     margin-bottom: 12px;
     color: #a78bfa;
 }
+
+.habit-step {
+    width: 60px;
+    min-width: 60px;
+    max-width: 60px;
+    padding: 6px 8px;
+    box-sizing: border-box;
+    text-align: center;
+    border-radius: 6px;
+    border: 1px solid #3a3a4a;
+    background: #1e1e2e;
+    color: white;
+}

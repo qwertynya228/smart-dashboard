@@ -20,7 +20,8 @@
     background: #2a2a3a;
     border-radius: 12px;
     padding: 16px;
-    transition: transform 0.2s;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
 }
 
 .note-card:hover {
@@ -66,6 +67,7 @@
 .note-editor {
     max-width: 800px;
     margin: 0 auto;
+    padding: 16px;
 }
 
 .note-editor-header {
@@ -103,4 +105,44 @@
     border-radius: 8px;
     font-family: monospace;
     resize: vertical;
+}
+
+.screen {
+    width: 100%;
+}
+
+.slide-in-from-right {
+    animation: slideInFromRight 0.35s ease forwards;
+}
+
+.slide-in-from-left {
+    animation: slideInFromLeft 0.35s ease forwards;
+}
+
+.slide-out-left {
+    animation: slideOutLeft 0.25s ease forwards;
+}
+
+.slide-out-right {
+    animation: slideOutRight 0.25s ease forwards;
+}
+
+@keyframes slideInFromRight {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideInFromLeft {
+    from { transform: translateX(-100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes slideOutLeft {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(-100%); opacity: 0; }
+}
+
+@keyframes slideOutRight {
+    from { transform: translateX(0); opacity: 1; }
+    to { transform: translateX(100%); opacity: 0; }
 }

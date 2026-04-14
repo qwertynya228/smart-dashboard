@@ -59,7 +59,7 @@
     color: #a0a0b0;
 }
 
-.form-input, .form-textarea {
+.form-input {
     width: 100%;
     padding: 10px;
     background: #1e1e2e;
@@ -69,6 +69,14 @@
 }
 
 .form-textarea {
+    width: 325px;
+    min-height: 120px;
+    max-height: 260px;
+    padding: 10px;
+    background: #1e1e2e;
+    border: 1px solid #3a3a4a;
+    color: white;
+    border-radius: 6px;
     resize: vertical;
 }
 

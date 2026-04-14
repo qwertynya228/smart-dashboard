@@ -26,7 +26,7 @@ export function renderProfileUI() {
 
                 <div class="form-group">
                     <label>О себе</label>
-                    <textarea id="profileBio" class="form-textarea" rows="3" placeholder="Напишите что-нибудь о себе">${escapeHtml(profile.bio || "")}</textarea>
+                    <textarea id="profileBio" class="form-textarea" rows="3" placeholder="Напишите что-нибудь о себе" style="width:325px; min-width:325px; max-width:325px; min-height:59px; resize:vertical;">${escapeHtml(profile.bio || "")}</textarea>
                 </div>
 
                 <div class="form-group">

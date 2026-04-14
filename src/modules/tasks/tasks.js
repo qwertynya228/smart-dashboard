@@ -1,8 +1,5 @@
-import { getMainContainer } from "../../core/uiContainer.js";
-import { tasksDummy } from "./tasksDummyData.js";
-
 // Логика CRUD и начисления баллов
-let tasks = [...tasksDummy]; // копируем заглушку
+let tasks = []; // начинаем с пустого массива
 
 // Получить все задачи
 export function getTasks() {

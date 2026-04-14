@@ -2,6 +2,13 @@ import { getTasks, addTask, completeTask, deleteTask } from "./tasks.js";
 import { getMainContainer } from "../../core/uiContainer.js";
 import { updateTrackerStats } from "../tracker/tracker.js";
 
+let pendingHabits = {
+    water: 0,
+    sport: 0,
+    reading: 0,
+    sleep: 0
+};
+
 export function renderTasksUI() {
     const container = getMainContainer();
     container.innerHTML = `
@@ -35,7 +42,16 @@ export function renderTasksUI() {
         btn.addEventListener("click", () => {
             const habit = btn.dataset.habit;
             const amount = parseFloat(btn.dataset.amount);
-            addHabitValue(habit, amount);
+            pendingHabits[habit] = Number((pendingHabits[habit] + amount).toFixed(2));
+            updatePendingHabitLabel(habit);
+        });
+    });
+
+    document.querySelectorAll(".habit-step").forEach(input => {
+        input.addEventListener("input", e => {
+            const habit = input.dataset.habit;
+            const value = parseFloat(input.value);
+            pendingHabits[habit] = Number(isNaN(value) ? 0 : value);
         });
     });
 }
@@ -46,7 +62,7 @@ function renderHabitCard(title, habit, step, unit) {
             <div class="habit-row">
                 <div class="habit-title">${title}</div>
                 <div class="habit-controls">
-                    <span class="habit-step">${step}</span>
+                    <input type="number" class="habit-step" style="width: 60px; min-width: 60px; max-width: 60px;" data-habit="${habit}" data-default-step="${step}" value="${step}" min="0" step="0.5">
                     <button class="habit-btn" data-habit="${habit}" data-amount="${step}">+</button>
                 </div>
             </div>
@@ -115,7 +131,33 @@ function addHabitValue(habit, amount) {
     updateStats();
 }
 
+function updatePendingHabitLabel(habit) {
+    const stepEl = document.querySelector(`.habit-step[data-habit="${habit}"]`);
+    if (stepEl) {
+        stepEl.value = pendingHabits[habit];
+    }
+}
+
+function resetHabitStepLabels() {
+    document.querySelectorAll(".habit-step").forEach(stepEl => {
+        stepEl.value = stepEl.dataset.defaultStep;
+    });
+}
+
 function saveAllData() {
+    const habits = JSON.parse(localStorage.getItem("habits") || '{"water":0,"sport":0,"reading":0,"sleep":0}');
+    Object.keys(pendingHabits).forEach(habit => {
+        habits[habit] += pendingHabits[habit];
+    });
+    localStorage.setItem("habits", JSON.stringify(habits));
+    pendingHabits = {
+        water: 0,
+        sport: 0,
+        reading: 0,
+        sleep: 0
+    };
+    resetHabitStepLabels();
+    loadHabits();
     updateStats();
     alert("Данные сохранены!");
 }

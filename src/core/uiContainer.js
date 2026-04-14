@@ -54,7 +54,11 @@ export function initUI() {
     buttons.forEach(btn => {
         btn.addEventListener("click", () => {
             const path = btn.dataset.path;
-            navigate(path);
+            if (window.location.pathname === path && !window.location.hash.startsWith("#note/")) {
+                return;
+            }
+            const animate = (window.location.pathname === path && window.location.hash.startsWith("#note/"));
+            navigate(path, { force: true, animate });
             highlightActiveButton(path);
         });
     });

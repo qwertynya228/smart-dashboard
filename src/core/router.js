@@ -3,11 +3,11 @@ let defaultRoute = null;
 
 export function initRouter() {
     routes = {
-        "/tasks": () => import("../modules/tasks/tasksUI.js").then(mod => mod.renderTasksUI()),
-        "/notes": () => import("../modules/notes/notesUI.js").then(mod => mod.renderNotesUI()),
-        "/tracker": () => import("../modules/tracker/trackerUI.js").then(mod => mod.renderTrackerUI()),
-        "/profile": () => import("../modules/profile/profileUI.js").then(mod => mod.renderProfileUI()),
-        "/settings": () => import("../modules/settings/settingsUI.js").then(mod => mod.renderSettingsUI())
+        "/tasks": (options) => import("../modules/tasks/tasksUI.js").then(mod => mod.renderTasksUI(options)),
+        "/notes": (options) => import("../modules/notes/notesUI.js").then(mod => mod.renderNotesUI(options)),
+        "/tracker": (options) => import("../modules/tracker/trackerUI.js").then(mod => mod.renderTrackerUI(options)),
+        "/profile": (options) => import("../modules/profile/profileUI.js").then(mod => mod.renderProfileUI(options)),
+        "/settings": (options) => import("../modules/settings/settingsUI.js").then(mod => mod.renderSettingsUI(options))
     };
     
     defaultRoute = "/tasks";
@@ -16,12 +16,21 @@ export function initRouter() {
     handleRoute();
 }
 
-export function navigate(path) {
-    history.pushState({}, "", path);
-    handleRoute();
+export function navigate(path, options = {}) {
+    if (window.location.pathname === path && !options.force) {
+        return;
+    }
+
+    if (window.location.pathname === path && options.force) {
+        history.replaceState({}, "", path);
+    } else {
+        history.pushState({}, "", path);
+    }
+
+    handleRoute(options);
 }
 
-function handleRoute() {
+function handleRoute(options = {}) {
     let path = window.location.pathname;
     if (path === "/" || !routes[path]) {
         path = defaultRoute;
@@ -30,6 +39,6 @@ function handleRoute() {
     
     const route = routes[path];
     if (route) {
-        route().catch(err => console.error("Route error:", err));
+        route(options).catch(err => console.error("Route error:", err));
     }
 }
