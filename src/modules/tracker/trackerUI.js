@@ -100,9 +100,10 @@ function formatStatValue(type, value) {
 function renderChart(type, weekly) {
     const data = weekly[type] || [];
     const max = Math.max(...data, 1);
+    const maxHeight = 120; // Высота контейнера .weekly-chart
     return data.map(value => `
         <div class="chart-bar-container">
-            <div class="chart-bar" style="height: ${Math.min((value / max) * 100, 100)}px"></div>
+            <div class="chart-bar" style="height: ${Math.min((value / max) * maxHeight, maxHeight)}px"></div>
         </div>
     `).join("");
 }

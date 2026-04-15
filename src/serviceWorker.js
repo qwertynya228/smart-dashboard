@@ -3,10 +3,7 @@ const CACHE_NAME = "smart-dashboard-v2";
 const ASSETS_TO_CACHE = [
   "/",
   "/index.html",
-  "/public/index.html",
   "/offline.html",
-  "/public/offline.html",
-  "/manifest.json",
   "/src/main.js",
   "/src/styles/reset.css",
   "/src/styles/variables.css",
@@ -17,7 +14,15 @@ self.addEventListener("install", event => {
   console.log("Service Worker installing...");
 
   event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS_TO_CACHE))
+    caches.open(CACHE_NAME).then(cache => {
+      return Promise.all(
+        ASSETS_TO_CACHE.map(url => {
+          return cache.add(url).catch(err => {
+            console.warn(`Failed to cache ${url}:`, err);
+          });
+        })
+      );
+    })
   );
 
   self.skipWaiting();
@@ -43,6 +48,11 @@ self.addEventListener("activate", event => {
 });
 
 self.addEventListener("fetch", event => {
+  // Пропускаем запросы через туннель (github.dev)
+  if (event.request.url.includes("github.dev") || event.request.url.includes("manifest.json")) {
+    return;
+  }
+
   event.respondWith(
     caches.match(event.request).then(response => {
       if (response) {
@@ -53,6 +63,7 @@ self.addEventListener("fetch", event => {
         if (event.request.mode === "navigate") {
           return caches.match("/offline.html");
         }
+        // Возвращаем пустой ответ для других типов запросов
         return undefined;
       });
     })
