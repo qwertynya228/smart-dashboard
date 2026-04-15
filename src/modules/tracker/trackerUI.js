@@ -9,7 +9,9 @@ export function renderTrackerUI() {
     const weekly = getWeeklyProgress();
 
     // Обновить tasks из tasks модуля
-    const completedTasks = getTasks().filter(t => t.completed).length;
+    const tasks = getTasks();
+    const completedTasks = tasks.filter(t => t.completed).length;
+    const totalTasks = tasks.length;
     const stats = {
         tasks: completedTasks,
         water: rawStats.water,
@@ -29,23 +31,23 @@ export function renderTrackerUI() {
             <div class="stats-grid">
                 <div class="stat-card">
                     <h3>Задачи</h3>
-                    <input type="number" class="stat-input" value="${stats.tasks}" readonly>
+                    <p class="stat-value">${completedTasks} из ${totalTasks}</p>
                 </div>
                 <div class="stat-card">
                     <h3>Вода</h3>
-                    <input type="number" class="stat-input" data-type="water" value="${stats.water}" min="0" step="0.1">
+                    <p class="stat-value">${formatStatValue('water', stats.water)}</p>
                 </div>
                 <div class="stat-card">
                     <h3>Спорт</h3>
-                    <input type="number" class="stat-input" data-type="sport" value="${stats.sport}" min="0">
+                    <p class="stat-value">${formatStatValue('sport', stats.sport)}</p>
                 </div>
                 <div class="stat-card">
                     <h3>Чтение</h3>
-                    <input type="number" class="stat-input" data-type="reading" value="${stats.reading}" min="0">
+                    <p class="stat-value">${formatStatValue('reading', stats.reading)}</p>
                 </div>
                 <div class="stat-card stat-wide">
                     <h3>Сон</h3>
-                    <input type="number" class="stat-input" data-type="sleep" value="${stats.sleep}" min="0" step="0.1">
+                    <p class="stat-value">${formatStatValue('sleep', stats.sleep)}</p>
                 </div>
             </div>
 
@@ -77,17 +79,22 @@ export function renderTrackerUI() {
         const chart = container.querySelector('#weeklyChart');
         chart.innerHTML = renderChart(type, weekly);
     });
+}
 
-    // Event listeners for inputs
-    const inputs = container.querySelectorAll('.stat-input:not([readonly])');
-    inputs.forEach(input => {
-        input.addEventListener('input', () => {
-            const type = input.dataset.type;
-            const value = parseFloat(input.value) || 0;
-            stats[type] = value;
-            updateTrackerStats(stats);
-        });
-    });
+function formatStatValue(type, value) {
+    const normalized = parseFloat(value) || 0;
+    switch (type) {
+        case 'water':
+            return `${normalized} л`;
+        case 'sport':
+            return `${normalized} мин`;
+        case 'reading':
+            return `${normalized} ч`;
+        case 'sleep':
+            return `${normalized} ч`;
+        default:
+            return `${normalized}`;
+    }
 }
 
 function renderChart(type, weekly) {

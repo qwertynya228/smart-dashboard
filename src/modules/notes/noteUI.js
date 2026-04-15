@@ -41,7 +41,7 @@ export function renderNoteUI(noteId) {
                     <button id="listBtn" class="toolbar-btn" type="button">-</button>
                     <button id="numListBtn" class="toolbar-btn" type="button">1.</button>
                 </div>
-                <textarea id="noteContent" class="note-content-input" rows="20" placeholder="Начните писать...">${escapeHtml(note.content)}</textarea>
+                <div id="noteContent" class="note-content-input" contenteditable="true" placeholder="Начните писать...">${note.content ? markdownToHtml(note.content) : ''}</div>
             </div>
         </div>
     `;
@@ -56,7 +56,9 @@ export function renderNoteUI(noteId) {
 
     let saveTimer = null;
     const saveNote = () => {
-        updateNote(noteId, titleInput.value, contentInput.value);
+        const htmlContent = contentInput.innerHTML;
+        const textContent = htmlToMarkdown(htmlContent);
+        updateNote(noteId, titleInput.value, textContent);
     };
     const scheduleSave = () => {
         clearTimeout(saveTimer);
@@ -66,10 +68,25 @@ export function renderNoteUI(noteId) {
     titleInput.addEventListener("input", scheduleSave);
     contentInput.addEventListener("input", scheduleSave);
 
+    // Handle placeholder for contenteditable
+    if (!contentInput.textContent.trim()) {
+        contentInput.innerHTML = '<div style="color: #666;">Начните писать...</div>';
+    }
+    contentInput.addEventListener("focus", () => {
+        if (contentInput.innerHTML === '<div style="color: #666;">Начните писать...</div>') {
+            contentInput.innerHTML = '';
+        }
+    });
+    contentInput.addEventListener("blur", () => {
+        if (!contentInput.textContent.trim()) {
+            contentInput.innerHTML = '<div style="color: #666;">Начните писать...</div>';
+        }
+    });
+
     // Toolbar button handlers
-    document.getElementById("boldBtn").addEventListener("click", () => formatText(contentInput, "**", "**"));
-    document.getElementById("italicBtn").addEventListener("click", () => formatText(contentInput, "*", "*"));
-    document.getElementById("listBtn").addEventListener("click", () => formatList(contentInput, "- "));
+    document.getElementById("boldBtn").addEventListener("click", () => formatText(contentInput, 'bold'));
+    document.getElementById("italicBtn").addEventListener("click", () => formatText(contentInput, 'italic'));
+    document.getElementById("listBtn").addEventListener("click", () => formatList(contentInput));
     document.getElementById("numListBtn").addEventListener("click", () => formatNumberedList(contentInput));
 
     document.getElementById("backToNotes").addEventListener("click", () => {
@@ -116,46 +133,59 @@ function openNotesList() {
     }
 }
 
-function formatText(textarea, prefix, suffix) {
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selectedText = textarea.value.substring(start, end);
-    const beforeText = textarea.value.substring(0, start);
-    const afterText = textarea.value.substring(end);
-    const newText = beforeText + prefix + selectedText + suffix + afterText;
-    textarea.value = newText;
-    textarea.selectionStart = textarea.selectionEnd = start + prefix.length + selectedText.length + suffix.length;
-    textarea.focus();
+function formatText(element, command) {
+    document.execCommand(command, false, null);
+    element.focus();
 }
 
-function formatList(textarea, prefix) {
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selectedText = textarea.value.substring(start, end);
-    const lines = selectedText.split('\n');
-    const formattedLines = lines.map(line => (line.trim() ? prefix + line : line));
-    const newSelectedText = formattedLines.join('\n');
-    const beforeText = textarea.value.substring(0, start);
-    const afterText = textarea.value.substring(end);
-    textarea.value = beforeText + newSelectedText + afterText;
-    textarea.selectionStart = start;
-    textarea.selectionEnd = start + newSelectedText.length;
-    textarea.focus();
+function formatList(element) {
+    document.execCommand('insertUnorderedList', false, null);
+    element.focus();
 }
 
-function formatNumberedList(textarea) {
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const selectedText = textarea.value.substring(start, end);
-    const lines = selectedText.split('\n');
-    const formattedLines = lines.map((line, index) => (line.trim() ? `${index + 1}. ${line}` : line));
-    const newSelectedText = formattedLines.join('\n');
-    const beforeText = textarea.value.substring(0, start);
-    const afterText = textarea.value.substring(end);
-    textarea.value = beforeText + newSelectedText + afterText;
-    textarea.selectionStart = start;
-    textarea.selectionEnd = start + newSelectedText.length;
-    textarea.focus();
+function formatNumberedList(element) {
+    document.execCommand('insertOrderedList', false, null);
+    element.focus();
+}
+
+function htmlToMarkdown(html) {
+    // Simple HTML to Markdown converter
+    let markdown = html
+        .replace(/<strong[^>]*>(.*?)<\/strong>/gi, '**$1**')
+        .replace(/<b[^>]*>(.*?)<\/b>/gi, '**$1**')
+        .replace(/<em[^>]*>(.*?)<\/em>/gi, '*$1*')
+        .replace(/<i[^>]*>(.*?)<\/i>/gi, '*$1*')
+        .replace(/<ul[^>]*>(.*?)<\/ul>/gi, (match, content) => {
+            return content.replace(/<li[^>]*>(.*?)<\/li>/gi, '- $1\n');
+        })
+        .replace(/<ol[^>]*>(.*?)<\/ol>/gi, (match, content) => {
+            let counter = 1;
+            return content.replace(/<li[^>]*>(.*?)<\/li>/gi, () => `${counter++}. $1\n`);
+        })
+        .replace(/<br[^>]*>/gi, '\n')
+        .replace(/<p[^>]*>(.*?)<\/p>/gi, '$1\n')
+        .replace(/<div[^>]*>(.*?)<\/div>/gi, '$1\n')
+        .replace(/&nbsp;/g, ' ')
+        .replace(/&lt;/g, '<')
+        .replace(/&gt;/g, '>')
+        .replace(/&amp;/g, '&')
+        .replace(/&quot;/g, '"')
+        .replace(/&#39;/g, "'");
+
+    return markdown.trim();
+}
+
+function markdownToHtml(markdown) {
+    // Simple Markdown to HTML converter
+    let html = markdown
+        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+        .replace(/\*(.*?)\*/g, '<em>$1</em>')
+        .replace(/^-\s+(.*)$/gm, '<li>$1</li>')
+        .replace(/^\d+\.\s+(.*)$/gm, '<li>$1</li>')
+        .replace(/(<li>.*<\/li>)/g, '<ul>$1</ul>')
+        .replace(/\n/g, '<br>');
+
+    return html;
 }
 
 function escapeHtml(str) {

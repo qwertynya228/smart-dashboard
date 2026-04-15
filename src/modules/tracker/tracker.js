@@ -112,3 +112,10 @@ export function updateWeeklyProgress(type, value) {
     }
     localStorage.setItem("weeklyProgress", JSON.stringify(weeklyData));
 }
+
+export function updateWeeklyProgressForToday(type, value) {
+    weeklyData[type] = weeklyData[type] || [];
+    const dayIndex = (new Date().getDay() + 6) % 7; // 0 - понедельник, 6 - воскресенье
+    weeklyData[type][dayIndex] = value;
+    localStorage.setItem("weeklyProgress", JSON.stringify(weeklyData));
+}

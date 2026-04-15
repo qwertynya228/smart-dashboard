@@ -98,13 +98,16 @@
 
 .note-content-input {
     width: 100%;
+    min-height: 300px;
     padding: 12px;
     background: #2a2a3a;
     border: 1px solid #3a3a4a;
     color: white;
     border-radius: 8px;
     font-family: monospace;
-    resize: vertical;
+    outline: none;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 .screen {

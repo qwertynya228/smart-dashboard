@@ -1,6 +1,6 @@
 import { getTasks, addTask, completeTask, deleteTask } from "./tasks.js";
 import { getMainContainer } from "../../core/uiContainer.js";
-import { updateTrackerStats } from "../tracker/tracker.js";
+import { updateTrackerStats, updateWeeklyProgressForToday } from "../tracker/tracker.js";
 
 let pendingHabits = {
     water: 0,
@@ -159,6 +159,16 @@ function saveAllData() {
     resetHabitStepLabels();
     loadHabits();
     updateStats();
+
+    // Обновить недельный прогресс для текущего дня
+    const totalTasks = getTasks().length;
+    const completedTasks = getTasks().filter(task => task.completed).length;
+    updateWeeklyProgressForToday('tasks', completedTasks);
+    updateWeeklyProgressForToday('water', habits.water);
+    updateWeeklyProgressForToday('sport', habits.sport);
+    updateWeeklyProgressForToday('reading', habits.reading);
+    updateWeeklyProgressForToday('sleep', habits.sleep);
+
     alert("Данные сохранены!");
 }
 
@@ -168,15 +178,18 @@ function updateStats() {
     const habits = JSON.parse(localStorage.getItem("habits") || '{"water":0,"sport":0,"reading":0,"sleep":0}');
 
     const stats = {
-        tasks: `${completedTasks} из ${totalTasks}`,
-        water: `${habits.water} л`,
-        sport: `${habits.sport} мин`,
-        reading: `${habits.reading} мин`,
-        sleep: `${habits.sleep} ч`
+        tasks: completedTasks,
+        water: habits.water,
+        sport: habits.sport,
+        reading: habits.reading,
+        sleep: habits.sleep
     };
 
     localStorage.setItem("dailyStats", JSON.stringify(stats));
     updateTrackerStats(stats);
+
+    // Обновить недельный прогресс для задач
+    updateWeeklyProgressForToday('tasks', completedTasks);
 }
 
 function escapeHtml(str) {

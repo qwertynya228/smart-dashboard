@@ -27,12 +27,15 @@
     box-sizing: border-box;
     min-width: 0;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .stat-card h3 {
     font-size: 13px;
     font-weight: 600;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     color: var(--muted);
 }
 
@@ -41,6 +44,11 @@
     font-weight: bold;
     margin: 0;
     color: #a78bfa;
+    word-break: break-word;
+}
+
+.stat-value::after {
+    content: attr(data-unit);
 }
 
 .stat-input {
@@ -54,6 +62,10 @@
     outline: none;
     box-sizing: border-box;
     max-width: 100%;
+}
+
+.stat-card.stat-wide {
+    grid-column: 1 / -1;
 }
 
 .stat-input:focus {

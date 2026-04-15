@@ -210,11 +210,13 @@ select:focus-visible {
     width: 100%;
     min-height: 380px;
     border: none;
-    resize: vertical;
+    outline: none;
     font-size: 14px;
     line-height: 1.5;
     color: var(--text);
     background: transparent;
+    white-space: pre-wrap;
+    word-wrap: break-word;
 }
 
 .tasks-list {
