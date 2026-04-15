@@ -20,7 +20,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/smart-dashboard:latest .
+        run: docker build -t ${{ secrets.DOCKER_USERNAME }}/smart-dashboard:latest ./docker
 
       - name: Push Docker image
         run: docker push ${{ secrets.DOCKER_USERNAME }}/smart-dashboard:latest
